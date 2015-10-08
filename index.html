@@ -4,11 +4,37 @@
     <meta charset="UTF-8">
     <title>Racing Frogs</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type = "text/css" href = "app.css">
 
 </head>
 
 <body ng-controller="MainController as vm">
+    
     <div class="container">
+        <div class = "panel panel-primary">
+            <div class = "panel-heading">Welcome to the Frog Races
+            </div>
+            <div class ="panel-body">
+                <table class = "race-table" border = "1" style = "width: 100%">
+                    <tr ng-repeat="frog in vm.frogList">
+                        <td class = "laneNum">{{frog.laneNum}}</td>
+                        <td class = "frogName">{{frog.name}}</td>
+                        <td class = "raceLane">{{}}
+                            <img class = "frogimg" style = "left: {{frog.posX}}%" src = "img/frog.jpeg" />
+                        </td>
+                        <td class = "finishLine">FINISH</td>
+                    </tr>
+                </table>
+            </div>
+            <div class = "panel-footer">
+                <span class = "btn btn-success">Start Race!</span>
+                <form>Frog Name:
+                    <input type = "text" name = "frogname">
+                </form>
+                <!---<span class = "btn btn-primary">Move!</span>--->
+            </div>
+        </div>
+        
         <div class="panel panel-primary">
             <div class="panel-heading">Fun with Joe and Bob
             </div>
@@ -26,9 +52,11 @@
             </div>
         </div>
     </div>      
+    
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.6/angular.min.js"></script>
     <script src="app.js"></script>
+    
 </body>
 
 </html>
