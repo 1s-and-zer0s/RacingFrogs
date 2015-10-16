@@ -27,11 +27,13 @@
                 </table>
             </div>
             <div class = "panel-footer">
-                <span class = "btn btn-success">Start Race!</span>
-                <form>Frog Name:
-                    <input type = "text" name = "frogname">
+                <span class = "btn btn-success" ng-click = "vm.startRace()">Start Race!</span>
+                <span class = "btn btn-warning" ng-click = "vm.reset()">Restart Race</span>
+                <form ng-submit="vm.addFrogToList(vm.frogName)">Frog Name:
+                    <button class = "btn btn-danger" type = "submit">Add A Frog</button>
+                    <input type = "text" name = "frogname" placeholder = "Type a name here" ng-model = "vm.frogName">
                 </form>
-                <!---<span class = "btn btn-primary">Move!</span>--->
+                <!--<button type = "submit">Submit</button>-->
             </div>
         </div>
         

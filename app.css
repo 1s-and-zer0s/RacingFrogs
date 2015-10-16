@@ -4,8 +4,12 @@
 
 .raceLane{
 	width: 90%;
+	position: relative;
+	height: 5em;
 }
 
 .frogimg{
 	width: 50px;
+	position: absolute;
+	left: 0;
 }

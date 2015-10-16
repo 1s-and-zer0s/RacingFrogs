@@ -3,68 +3,90 @@ app.controller('MainController', MainController);
 app.service('RacingService', RacingService);
 //No need to change anything above this line.
 
-function RacingService(){
-    
+function RacingService() {
+    this.addTwoNumbers = function (x, y) {
+        return x + y;
+    }
 }
 
-function MainController() {
-    var vm = this; //instead of using this when refering to the controller, let's use vm. It will make things easier.
-    
-    vm.joe = new GuyConstructor("Joe", 100);
-    vm.bob = new GuyConstructor("Bob", 150);
-    vm.bank = 200;
+function MainController($timeout, RacingService) {
+    var vm = this; //instead of using 'this' when refering to the controller, we use vm. It is necessary.
     
     vm.frogList = [];
-    
-    function FrogConstructor(laneNum, name, posX){  
+    var frogLimit = 7;
+
+    var finishLine = 94;
+
+    function FrogConstructor(laneNum, name, posX) { //creates a frog object with properties - laneNum, name, & posX
         this.laneNum = laneNum;
         this.name = name;
         this.posX = posX;
     }
-    
-     vm.addFrogToList = function (frog){
-        vm.frogList.push(frog);
+
+    vm.addFrogToList = function (frogname) { 
+        if (vm.frogList.length === frogLimit || !vm.frogName) {
+            return;
+        }
+        var newlaneNum = vm.frogList.length + 1;
+        vm.frogList.push(new FrogConstructor(newlaneNum, frogname, 1));
+        vm.frogName = '';
     }
-    
-    vm.race = function race(){
-        vm.frogList.forEach(function(frog){
+
+    vm.race = function race() {
+        vm.frogList.forEach(function (frog) {
             frog.posX += Math.random();
         })
     }
-    
-    function moveFrogs(){
-        for (var i = 0; i < vm.race.length; i++){
-            var frog = vm.race[i];
-            frog.posX += Math.floor(Math.random() * 10);
+
+    function moveFrogs() {
+        checkWinners();
+        if (vm.racing) {
+            var indexOfFrogToMove = Math.floor(Math.random() * vm.frogList.length);
+            vm.frogList[indexOfFrogToMove].posX += Math.random() * 3;
+            $timeout(moveFrogs, 50)
         }
     }
-    
-    function checkWinners(){
+
+    vm.startRace = function () {
+        vm.racing = true;
+        moveFrogs();
+    }
+
+    function checkWinners() {
+        var potentialWinners = [];
         vm.winners = [];
-        vm.race.forEach(function(frog){
-            if(frog.posX >= finishLine){
-                vm.winners.push(frog);
+        vm.frogList.forEach(function (frog) {
+            if (frog.posX >= finishLine) { //if a frog's position in the frog list is past the finish line
+                potentialWinners.push(frog); //put that frog into the potential winners array
             }
-        })
-        if(vm.winners.length > 0){
+        });
+        if (potentialWinners.length > 0) {
+            var firstToCross = 0;
+            var firstPlace;
+            potentialWinners.forEach(function (frog) {
+                if (frog.posX > firstToCross) {
+                    firstToCross = frog.posX;
+                    firstPlace = frog;
+                } else {
+                    vm.winners.push(frog);
+                }
+            });
+            vm.winners.unshift(firstPlace);
             vm.racing = false;
-            
+        } else {
+            vm.winners = potentialWinners;
         }
     }
-    
-    function testing (){
-        var frog1 = new FrogConstructor(1, "Bill", 1);
-        var frog2 = new FrogConstructor(2,"Frank", 1);
-        var frog3 = new FrogConstructor(3, "Hermit", 1);
-        vm.addFrogToList(frog1);
-        vm.addFrogToList(frog2);
-        vm.addFrogToList(frog3);
+
+    vm.reset = function () {
+        vm.frogList.forEach(function (frog) {
+            frog.posX = 1;
+        });
     }
-    testing();
-    
-    
-    
-    
+
+    vm.joe = new GuyConstructor("Joe", 100);
+    vm.bob = new GuyConstructor("Bob", 150);
+    vm.bank = 200;
 
     function GuyConstructor(name, startingCash) {
 
@@ -110,4 +132,9 @@ function MainController() {
         }
     }
 }
+
+
+
+
+
 
